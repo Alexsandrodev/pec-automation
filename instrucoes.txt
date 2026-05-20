@@ -1,0 +1,7 @@
+// A automaçao deve abrir o site do e-SUS PEC do municipio ao qual deve ser feito a coleta de dados
+
+// logo apos devera buscar os dados para logar o no sistema e entrar nele
+
+// depois pela URL entrar no local ao qual deve ser felto a coleta de dados 
+
+

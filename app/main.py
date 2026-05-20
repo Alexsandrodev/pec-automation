@@ -1,34 +1,24 @@
-from app.core.browser import BrowserManager
+import asyncio
 
-from app.pages.login_page import LoginPage
-from app.pages.folder_page import FolderPage
+from infrastructure.browser.playwright_factory import PlaywrightFactory
+from infrastructure.browser.browser_manager import BrowserManager
+from infrastructure.scrapers.user_scraper import UserScraper
+from application.use_cases.scrape_users import ScrapeUsersUseCase
 
-from app.services.workflow_service import WorkflowService
-
-def main():
-
-    browser = BrowserManager()
-
-    page = browser.start()
-
-    try:
-
-        login_page = LoginPage(page)
-
-        folder_page = FolderPage(page)
-
-        workflow = WorkflowService(
-            login_page,
-            folder_page
-        )
-
-        data = workflow.execute()
-
-        print(data)
-
-    finally:
-
-        browser.close()
-
+async def main():
+    factory = PlaywrightFactory()
+    browser = BrowserManager(factory)
+    
+    await browser.start()
+    
+    scrape = UserScraper(browser)
+    use_case = ScrapeUsersUseCase(scrape)
+    results = await use_case.execute()
+    
+    print(results)
+    
+    await browser.close()
+    
+    
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
